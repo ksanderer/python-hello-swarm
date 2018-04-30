@@ -1,0 +1,68 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:9.4
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      # https://github.com/peter-evans/docker-compose-healthcheck
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 15s
+      timeout: 15s
+      retries: 5
+#    deploy:
+#      placement:
+#        constraints: [node.role == manager]
+  app:
+    image: pyhello:latest
+    volumes:
+      - app-data:/app/data
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: ingress
+    networks:
+      - backend
+    depends_on:
+      - db
+    configs:
+      - source: pyhello_env
+        target: /app/env
+    healthcheck:
+      # https://github.com/peter-evans/docker-compose-healthcheck
+#      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      test: ["CMD-SHELL", "./healthcheck.sh"]
+      interval: 3s
+      timeout: 1s
+      retries: 3
+
+networks:
+  backend:
+
+volumes:
+  app-data:
+#    driver_opts:
+#      type: none
+#      device: "/Users/ksanderer/Projects/hcmc-project/hcmc-job-application/volumes/app"
+#      o: bind
+  db-data:
+#    driver_opts:
+#      type: none
+#      device: "/Users/ksanderer/Projects/hcmc-project/hcmc-job-application/volumes/db"
+#      o: bind
+
+configs:
+  pyhello_env:
+    file: ./pyhello_env
+
+# OR
+#configs:
+#  - source: my_config
+#    target: /redis_config
+#    uid: '103'
+#    gid: '103'
+#    mode: 0440
