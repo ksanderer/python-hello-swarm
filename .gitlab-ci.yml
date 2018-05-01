@@ -12,7 +12,7 @@ image: docker:latest
 variables:
   DOCKER_DRIVER: overlay2
   CONTAINER_IMAGE_RELEASE: "${CI_PROJECT_PATH}"
-  CONTAINER_IMAGE_TEST: "${CI_PROJECT_PATH}__TEST"
+  CONTAINER_IMAGE_TEST: "${CI_PROJECT_PATH}__test"
 
 services:
   - docker:dind
