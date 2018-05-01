@@ -15,8 +15,11 @@ RUN apk del build-deps
 
 ADD . /app/
 RUN chmod 0755 /app/run.sh
+RUN chmod 0755 /app/test.sh
 RUN chmod 0755 /app/healthcheck.sh
 
+
 #HEALTHCHECK --interval=5s --timeout=3s CMD curl -f http://localhost:8111/ || exit 1
-ENTRYPOINT ["/bin/sh", "run.sh"]
+CMD /bin/sh run.sh
+#ENTRYPOINT ["/bin/sh", "run.sh"]
 #ENTRYPOINT ["python", "web.py"]
