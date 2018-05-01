@@ -11,8 +11,8 @@ image: docker:latest
 # improved performance.
 variables:
   DOCKER_DRIVER: overlay2
-  CONTAINER_IMAGE_RELEASE: "registry.gitlab.com/${CI_PROJECT_PATH}"
-  CONTAINER_IMAGE_TEST: "registry.gitlab.com/${CI_PROJECT_PATH}__test"
+  CONTAINER_IMAGE_RELEASE: "registry.gitlab.com/${CI_PROJECT_PATH}/release"
+  CONTAINER_IMAGE_TEST: "registry.gitlab.com/${CI_PROJECT_PATH}/test"
 
 services:
   - docker:dind
