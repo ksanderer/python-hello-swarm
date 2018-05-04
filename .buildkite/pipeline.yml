@@ -15,37 +15,3 @@ steps:
     plugins:
       docker-compose#v1.8.0:
         run: agent
-
-#  - wait
-#
-#  - label: 'Docker push'
-#    command: 'docker push'
-#    plugins:
-#      docker-login#v1.1.0:
-#        username: myuser
-#    branches: 'master'
-
-#  - wait
-#
-#  - label: ':debian: Publish'
-#    command: 'scripts/build-debian-packages.sh'
-#    artifact_paths: 'deb/**/*'
-#    branches: 'master'
-#    agents:
-#      queue: 'deploy'
-#
-#  - block: ':shipit: Release'
-#    branches: 'master'
-#
-#  - label: ':github: Release'
-#    command: 'scripts/build-github-release.sh'
-#    artifact_paths: 'releases/**/*'
-#    branches: 'master'
-#
-#  - wait
-#
-#  - label: ':whale: Update images'
-#    command: 'scripts/release-docker.sh'
-#    branches: 'master'
-#    agents:
-#      queue: 'deploy'
