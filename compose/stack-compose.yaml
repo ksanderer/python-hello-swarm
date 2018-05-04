@@ -13,11 +13,13 @@ services:
       interval: 15s
       timeout: 15s
       retries: 5
-#    deploy:
-#      placement:
-#        constraints: [node.role == manager]
+    deploy:
+      placement:
+        # deploy constraints https://docs.docker.com/compose/compose-file/#placement
+        constraints:
+          - node.labels.type == dataworker-manager
   app:
-    image: pyhello:latest
+    image: registry.gitlab.com/hcmc/python-hello-swarm/release:latest
     volumes:
       - app-data:/app/data
     ports:
@@ -30,39 +32,40 @@ services:
     depends_on:
       - db
     configs:
-      - source: pyhello_env
+      - source: python-hello-swarm
         target: /app/env
     healthcheck:
       # https://github.com/peter-evans/docker-compose-healthcheck
-#      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      # test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
       test: ["CMD-SHELL", "./healthcheck.sh"]
       interval: 3s
       timeout: 1s
       retries: 3
+    deploy:
+      placement:
+        # deploy constraints https://docs.docker.com/compose/compose-file/#placement
+        constraints:
+          - node.labels.type == data-worker
 
 networks:
-  backend:
+  # https://docs.docker.com/compose/networking/#use-a-pre-existing-network
+  external:
+      name: backend
 
 volumes:
-  app-data:
-#    driver_opts:
-#      type: none
-#      device: "/Users/ksanderer/Projects/hcmc-project/hcmc-job-application/volumes/app"
-#      o: bind
+  # current app doesn't require persistent volume
+  # app-data:
+  #   driver_opts:
+  #     type: none
+  #     device: "/mnt/app-data/python-hello-swarm"
+  #     o: bind
   db-data:
-#    driver_opts:
-#      type: none
-#      device: "/Users/ksanderer/Projects/hcmc-project/hcmc-job-application/volumes/db"
-#      o: bind
+    driver_opts:
+      type: none
+      device: "/mnt/db-data/python-hello-swarm"
+      o: bind
+
 
 configs:
-  pyhello_env:
-    file: ./pyhello_env
-
-# OR
-#configs:
-#  - source: my_config
-#    target: /redis_config
-#    uid: '103'
-#    gid: '103'
-#    mode: 0440
+  python-hello-swarm:
+    file: ./env
