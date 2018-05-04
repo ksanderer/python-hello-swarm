@@ -6,16 +6,16 @@ steps:
   - label: 'Build docker image'
     command: 'docker build -t ${IMAGE_NAME} .'
     plugins:
-      docker#v1.1.1:
-        image: "docker:latest"
+      docker-compose#v1.8.0:
+        run: agent
 
   - wait
 
   - label: ':hammer: Tests'
     command: 'docker run ${IMAGE_NAME}:latest /bin/sh test.sh'
     plugins:
-      docker#v1.1.1:
-        image: "docker:latest"
+      docker-compose#v1.8.0:
+        run: agent
 
 #  - wait
 #
