@@ -1,7 +1,6 @@
 env:
   IMAGE_NAME: 'pyhello'
 
-
 steps:
   - label: 'Build docker image'
     command: 'docker build -t ${IMAGE_NAME} .'
