@@ -1,12 +1,23 @@
 env:
-  IMAGE_NAME: 'pyhello'
-
-
+  APP_NAME: 'python-hello-swarm'
+  TEST_IMAGE_NAME: '${APP_NAME}--test'
+  IMAGE_NAME: '${DOCKER_REGISTRY}/${APP_NAME}'
+  
 steps:
   - label: 'Build docker image'
-    command: 'docker build -t ${IMAGE_NAME} .'
-
+    command: 
+      - docker build -t ${TEST_IMAGE_NAME} .
+      
   - wait
 
   - label: ':hammer: Tests'
-    command: 'docker run ${IMAGE_NAME}:latest /bin/sh test.sh'
+    command: 'docker run ${TEST_IMAGE_NAME}:latest python3 -m test'
+    
+  - wait
+  
+  - label: 'Registry push'
+    command: 
+      - docker tag ${TEST_IMAGE_NAME} ${IMAGE_NAME}
+      - docker tag ${TEST_IMAGE_NAME} ${IMAGE_NAME}:latest
+      - docker push ${IMAGE_NAME}
+    branches: "master"
