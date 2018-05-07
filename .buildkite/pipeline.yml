@@ -12,7 +12,7 @@ steps:
   - wait
 
   - label: ':hammer: Tests'
-    command: 'docker run ${TEST_IMAGE_NAME}:latest python3 -m test'
+    command: 'docker run ${TEST_IMAGE_NAME}:latest /bin/sh test.sh'
     
   - wait
   
