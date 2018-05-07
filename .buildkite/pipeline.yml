@@ -3,6 +3,7 @@ env:
   TEST_IMAGE_NAME: '${APP_NAME}--test'
   IMAGE_NAME: '${DOCKER_REGISTRY}/${APP_NAME}'
   
+  
 steps:
   - label: 'Build docker image'
     command: 
