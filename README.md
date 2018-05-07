@@ -1,3 +1,5 @@
+[![Build status](https://badge.buildkite.com/20fe1542bc988c705daa269c65198fee1aca219dd5864b8847.svg)](https://buildkite.com/hcmc/python-hello-swarm)
+
 Here you can find a very basic example how to use [docker swarm config](https://docs.docker.com/compose/compose-file/#configs) and [healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck) feature.
 
 ## Setup
